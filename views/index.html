@@ -12,31 +12,34 @@
 $(document).ready(function(){
     $("#username").hide();
     $('#login-submit').click(function(e){
-      if($(this).attr('value') === 'Register') {
-        $.post("http://localhost:3000/register",{
+        if($(this).attr('value') === 'Register') {
+            $.post("http://localhost:3000/register",{
                user_name : $("#username").val(),
                user_email : $("#useremail").val(),
                user_password : $("#password").val()
-             },function(data){
-        if(data.error) {
-            alert(data.message);
-        } else {
-            $("#username").hide();
-            $("#login-submit").prop('value','Log in');
+            },function(data){
+                if(data.error) {
+                    alert(data.message);
+                } 
+                else {
+                    $("#username").hide();
+                    $("#login-submit").prop('value','Log in');
+                }
+            });
+        } 
+	    else {
+            $.post("http://localhost:3000/login",{
+                user_email : $("#useremail").val(),
+                user_password : $("#password").val()
+                },function(data){
+                    if(!data.error) {
+                        window.location.href = "/home";
+                    }
+                    else {
+                        alert(data.message);
+                    }
+                });
         }
-    });
-    } else {
-        $.post("http://localhost:3000/login",{
-                   user_email : $("#useremail").val(),
-                   user_password : $("#password").val()
-                   },function(data){
-            if(!data.error) {
-                window.location.href = "/home";
-            } else {
-                alert(data.message);
-            }
-        });
-    }
     });
     $("#reg").click(function(event){
         $("#username").show('slow');
@@ -65,3 +68,4 @@ $(document).ready(function(){
     </div>
     </body>
 </html>
+
